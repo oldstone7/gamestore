@@ -6,6 +6,7 @@ const GameList = () => {
   const [filteredGames, setFilteredGames] = useState([]); // State for filtered games
   const [genres, setGenres] = useState([]);           // State for genres list
   const [selectedGenre, setSelectedGenre] = useState(""); // State for selected genre
+  const [searchQuery, setSearchQuery] = useState("");     // State for search term
   const API_KEY = process.env.REACT_APP_RAWG_API_KEY;
 
   useEffect(() => {
@@ -45,16 +46,33 @@ const GameList = () => {
   const handleGenreChange = (event) => {
     const genre = event.target.value;
     setSelectedGenre(genre);
+    filterGames(genre, searchQuery);
+  };
 
-    // Filter games based on selected genre
-    if (genre === "") {
-      setFilteredGames(games); // If no genre selected, show all games
-    } else {
-      const filtered = games.filter((game) =>
-        game.genres.some((g) => g.slug === genre) // Match by genre slug
+  // Handle search input change
+  const handleSearchChange = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    filterGames(selectedGenre, query);
+  };
+
+  // Filter games based on genre and search query
+  const filterGames = (genre, query) => {
+    let filtered = games;
+
+    if (genre !== "") {
+      filtered = filtered.filter((game) =>
+        game.genres.some((g) => g.slug === genre)
       );
-      setFilteredGames(filtered);
     }
+
+    if (query !== "") {
+      filtered = filtered.filter((game) =>
+        game.name.toLowerCase().includes(query.toLowerCase())
+      );
+    }
+
+    setFilteredGames(filtered);
   };
 
   return (
@@ -69,6 +87,13 @@ const GameList = () => {
             </option>
           ))}
         </select>
+
+        <input
+          type="text"
+          placeholder="Search games..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
       </div>
 
       <div className="game-list">
