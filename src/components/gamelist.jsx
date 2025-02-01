@@ -46,12 +46,7 @@ const GameList = ({ games }) => {
     filterGames(genre, searchQuery);
   };
 
-  // Handle search input change
-  const handleSearchChange = (event) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-    filterGames(selectedGenre, query);
-  };
+
 
   // Filter games based on genre and search query
   const filterGames = (genre, query) => {
@@ -89,12 +84,7 @@ const GameList = ({ games }) => {
           ))}
         </select>
 
-        <input
-          type="text"
-          placeholder="Search games..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
+        
       </div>
 
       <div className="game-list">
