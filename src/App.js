@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import GameList from "./components/GameList";
+import GameList from "./components/Gamelist";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import "./App.css";
