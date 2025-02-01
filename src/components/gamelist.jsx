@@ -1,31 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import GameCard from "./GameCard";
 
-const GameList = () => {
-  const [games, setGames] = useState([]);            // State for all games
+const GameList = ({ games }) => {
   const [filteredGames, setFilteredGames] = useState([]); // State for filtered games
-  const [genres, setGenres] = useState([]);           // State for genres list
+  const [genres, setGenres] = useState([]); // State for genres list
   const [selectedGenre, setSelectedGenre] = useState(""); // State for selected genre
   const API_KEY = process.env.REACT_APP_RAWG_API_KEY;
 
+  // Fetch genres when component mounts
   useEffect(() => {
-    // Fetch games from API
-    const fetchGames = async () => {
-      try {
-        const response = await axios.get(`https://api.rawg.io/api/games`, {
-          params: {
-            key: API_KEY,
-            page_size: 50, // Fetch 50 games
-          },
-        });
-        setGames(response.data.results);            // Store all games
-        setFilteredGames(response.data.results);    // Initialize filtered games as all games
-      } catch (error) {
-        console.error("Error fetching games:", error);
-      }
-    };
-
-    // Fetch genres from API
     const fetchGenres = async () => {
       try {
         const response = await axios.get(`https://api.rawg.io/api/genres`, {
@@ -37,31 +21,37 @@ const GameList = () => {
       }
     };
 
-    fetchGames();
     fetchGenres();
   }, [API_KEY]);
 
+  // Update filtered games when `games` or `selectedGenre` changes
+  useEffect(() => {
+    if (games) {
+      if (selectedGenre === "") {
+        setFilteredGames(games); // Show all games if no genre is selected
+      } else {
+        const filtered = games.filter((game) =>
+          game.genres.some((g) => g.slug === selectedGenre)
+        );
+        setFilteredGames(filtered);
+      }
+    }
+  }, [games, selectedGenre]);
+
   // Handle genre change from dropdown
   const handleGenreChange = (event) => {
-    const genre = event.target.value;
-    setSelectedGenre(genre);
-
-    // Filter games based on selected genre
-    if (genre === "") {
-      setFilteredGames(games); // If no genre selected, show all games
-    } else {
-      const filtered = games.filter((game) =>
-        game.genres.some((g) => g.slug === genre) // Match by genre slug
-      );
-      setFilteredGames(filtered);
-    }
+    setSelectedGenre(event.target.value); // Update selected genre
   };
 
   return (
     <>
       <div className="filter-section">
         <label htmlFor="genre-filter">Filter by Genre: </label>
-        <select id="genre-filter" value={selectedGenre} onChange={handleGenreChange}>
+        <select
+          id="genre-filter"
+          value={selectedGenre}
+          onChange={handleGenreChange}
+        >
           <option value="">All</option>
           {genres.map((genre) => (
             <option key={genre.id} value={genre.slug}>
@@ -73,15 +63,7 @@ const GameList = () => {
 
       <div className="game-list">
         {filteredGames.length ? (
-          filteredGames.map((game) => (
-            <div key={game.id} className="game-card">
-              <img src={game.background_image} alt={game.name} />
-              <h3>{game.name}</h3>
-              <p>Released: {game.released}</p>
-              <p>Rating: {game.rating}</p>
-              <p>{game.genres.map((genre) => genre.name).join(", ")}</p>
-            </div>
-          ))
+          filteredGames.map((game) => <GameCard key={game.id} game={game} />)
         ) : (
           <p>Loading games...</p>
         )}
