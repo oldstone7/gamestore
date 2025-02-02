@@ -3,7 +3,7 @@ import React from 'react';
 function Footer() {
   return (
     <footer>
-      <p>&copy; 2024 GameStore. All rights reserved.</p>
+      <p>&copy; {new Date().getFullYear()} GameStore. All rights reserved.</p>
     </footer>
   );
 }
