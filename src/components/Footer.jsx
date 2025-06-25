@@ -6,20 +6,18 @@ const Footer = () => {
   
   const quickLinks = [
     { name: 'Home', href: '/' },
-    { name: 'Games', href: '/games' },
-    { name: 'New Releases', href: '/new-releases' },
-    { name: 'Top Rated', href: '/top-rated' },
+    { name: 'Games', href: '/browse' },
+    { name: 'New Releases', href: '#' },
+    { name: 'Top Rated', href: '#' },
   ];
 
   const supportLinks = [
     { name: 'Contact Us', href: '/contact' },
-    { name: 'FAQs', href: '/faq' },
-    { name: 'About', href: '/about' },
-    { name: 'Terms of Service', href: '/terms' },
+    { name: 'FAQs', href: '#' },
+    { name: 'About', href: '#' },
+    { name: 'Terms of Service', href: '#' },
   ];
-
   
-
   return (
     <footer className="bg-gray-900 text-gray-300 pt-12 pb-6">
       <div className="container mx-auto px-4">
@@ -40,10 +38,7 @@ const Footer = () => {
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-300"
-                  >
+                  <a href={link.href} className="text-gray-400 hover:text-white transition-colors duration-300">
                     {link.name}
                   </a>
                 </li>
@@ -57,10 +52,7 @@ const Footer = () => {
             <ul className="space-y-2">
               {supportLinks.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-300"
-                  >
+                  <a href={link.href} className="text-gray-400 hover:text-white transition-colors duration-300">
                     {link.name}
                   </a>
                 </li>

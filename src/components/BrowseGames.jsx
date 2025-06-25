@@ -323,6 +323,7 @@ const BrowseGames = () => {
               className="text-2xl font-bold"
               style={{ color: 'var(--text)' }}
             >
+              
               {searchQuery ? `Search: ${searchQuery}` : 'Browse Games'}
               {selectedGenres.length > 0 && (
                 <span className="text-gray-700 dark:text-gray-400 text-lg font-normal">
